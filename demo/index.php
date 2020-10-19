@@ -5,7 +5,16 @@ include_once '../vendor/autoload.php';
  */
 
 $recovery = function () {
-    $lock = \qiLim\redisLock\lock::getInstance();
+    $options = [
+        'redis' => [
+            'scheme' => 'tcp',
+            'host' => 'redis',
+            'port' => 6379
+        ],
+        'beanstalkd' => 'beanstalkd'
+    ];
+
+    $lock = \qiLim\redisLock\lock::getInstance($options);
     $pid = posix_getpid();
     //1.1 获取锁
     $result = $lock->lock('lock', $pid, '300');

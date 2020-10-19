@@ -144,8 +144,17 @@ $result = $lock->unLock('lock', $pid, '300');
 <?php
 include_once '../vendor/autoload.php';
 $pid = getmypid();
+    $options = [
+        'redis' => [
+            'scheme' => 'tcp',
+            'host' => 'redis',
+            'port' => 6379
+        ],
+        'beanstalkd' => 'beanstalkd'
+    ];
 
-$lock = \qiLim\redisLock\lock::getInstance();
+$lock = \qiLim\redisLock\lock::getInstance($options);
+
 
 //1.1 获取锁
 $result = $lock->lock('lock', $pid, '300');
