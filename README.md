@@ -96,6 +96,10 @@
 该分布式锁实现了如下功能：
 1. 多进程可见，开启多个进程获取同一个共享锁
 2. 互斥
+# 安装
+```
+composer require qilim/redis-lock
+```
 
 # 使用
 1. 加锁操作
@@ -136,12 +140,12 @@ $result = $lock->unLock('lock', $pid, '300');
  set stock 50
 ```
  2. 业务代码
- ```
+ ```PHP
 <?php
 include_once '../vendor/autoload.php';
 $pid = getmypid();
 
-$lock = \qiLin\redisLock\lock::getInstance();
+$lock = \qiLim\redisLock\lock::getInstance();
 
 //1.1 获取锁
 $result = $lock->lock('lock', $pid, '300');
@@ -156,7 +160,7 @@ if ($result && $stock <= 0) {
 // 3. 减少库存
 $stock = $lock->getRedisInstance()->decrby('stock', '1');
 echo $msg = "扣减成功，库存{$stock}" . PHP_EOL;
-error_log($msg, '3', "a.log");
+//error_log($msg, '3', "a.log");
 
 //4. 回收锁
 $result = $lock->unLock('lock', $pid, '300');
